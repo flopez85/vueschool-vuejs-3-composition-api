@@ -1,12 +1,14 @@
 <template>
   <p>
     <strong>{{ name }}</strong>
-    {{ price }}
+    {{ pricePrettySentence }}
     <button @click="addToCart">Add to Cart</button>
   </p>
 </template>
 
 <script>
+import {computed} from "vue";
+
 export default {
   props: {
     name: String,
@@ -14,10 +16,12 @@ export default {
   },
   setup(props, {attrs, slots, emit}) {
     const addToCart = () => emit("addToCart", props.name);
+    const pricePretty = computed(() => `$${props.price.toFixed(2)}`);
+    const pricePrettySentence = computed(
+        () => `The price of this item is ${pricePretty.value}`
+    );
 
-    return {
-      addToCart
-    }
+    return { addToCart, pricePrettySentence }
   }
 }
 </script>
